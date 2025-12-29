@@ -25,9 +25,8 @@ export default function DocumentUpload({ onUploadComplete }: Props) {
       setFile(null);
       setTitle('');
       onUploadComplete();
-    } catch (err) {
-      const error = err as AxiosError<{ detail: string }>;
-      setError(error.response?.data?.detail || 'Upload failed');
+    } catch (error) {
+      setError((error as AxiosError<{ detail: string }>).response?.data?.detail || 'Upload failed');
     } finally {
       setUploading(false);
     }
