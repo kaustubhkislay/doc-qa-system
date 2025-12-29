@@ -1,0 +1,26 @@
+# Web framework
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+python-multipart==0.0.20
+
+# Google Cloud
+google-cloud-storage==2.19.0
+google-cloud-firestore==2.20.0
+google-cloud-aiplatform==1.76.0
+
+# LangChain (current stable versions)
+langchain==0.3.14
+langchain-google-vertexai==2.0.12
+langchain-community==0.3.14
+langchain-chroma==0.2.0
+
+# PDF processing
+pypdf==5.1.0
+
+# Vector store (persistent)
+chromadb==0.5.23
+
+# Utilities
+python-dotenv==1.0.1
+pydantic==2.10.4
+pydantic-settings==2.7.1
