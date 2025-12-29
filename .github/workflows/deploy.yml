@@ -34,20 +34,20 @@ jobs:
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
 
-      - name: Configure Docker for GCR
-        run: gcloud auth configure-docker gcr.io --quiet
+      - name: Configure Docker for Artifact Registry
+        run: gcloud auth configure-docker ${{ env.GCP_REGION }}-docker.pkg.dev --quiet
 
       - name: Build and Push Docker image
         working-directory: ./backend
         run: |
-          docker build -t gcr.io/${{ env.GCP_PROJECT_ID }}/doc-qa-backend:${{ github.sha }} .
-          docker push gcr.io/${{ env.GCP_PROJECT_ID }}/doc-qa-backend:${{ github.sha }}
+          docker build -t ${{ env.GCP_REGION }}-docker.pkg.dev/${{ env.GCP_PROJECT_ID }}/doc-qa/backend:${{ github.sha }} .
+          docker push ${{ env.GCP_REGION }}-docker.pkg.dev/${{ env.GCP_PROJECT_ID }}/doc-qa/backend:${{ github.sha }}
 
       - name: Deploy to Cloud Run
         id: deploy
         run: |
           gcloud run deploy doc-qa-backend \
-            --image gcr.io/${{ env.GCP_PROJECT_ID }}/doc-qa-backend:${{ github.sha }} \
+            --image ${{ env.GCP_REGION }}-docker.pkg.dev/${{ env.GCP_PROJECT_ID }}/doc-qa/backend:${{ github.sha }} \
             --platform managed \
             --region ${{ env.GCP_REGION }} \
             --allow-unauthenticated \
@@ -82,21 +82,21 @@ jobs:
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
 
-      - name: Configure Docker for GCR
-        run: gcloud auth configure-docker gcr.io --quiet
+      - name: Configure Docker for Artifact Registry
+        run: gcloud auth configure-docker ${{ env.GCP_REGION }}-docker.pkg.dev --quiet
 
       - name: Build and Push Docker image
         working-directory: ./frontend
         run: |
           docker build \
             --build-arg VITE_API_URL=${{ needs.deploy-backend.outputs.backend_url }} \
-            -t gcr.io/${{ env.GCP_PROJECT_ID }}/doc-qa-frontend:${{ github.sha }} .
-          docker push gcr.io/${{ env.GCP_PROJECT_ID }}/doc-qa-frontend:${{ github.sha }}
+            -t ${{ env.GCP_REGION }}-docker.pkg.dev/${{ env.GCP_PROJECT_ID }}/doc-qa/frontend:${{ github.sha }} .
+          docker push ${{ env.GCP_REGION }}-docker.pkg.dev/${{ env.GCP_PROJECT_ID }}/doc-qa/frontend:${{ github.sha }}
 
       - name: Deploy to Cloud Run
         run: |
           gcloud run deploy doc-qa-frontend \
-            --image gcr.io/${{ env.GCP_PROJECT_ID }}/doc-qa-frontend:${{ github.sha }} \
+            --image ${{ env.GCP_REGION }}-docker.pkg.dev/${{ env.GCP_PROJECT_ID }}/doc-qa/frontend:${{ github.sha }} \
             --platform managed \
             --region ${{ env.GCP_REGION }} \
             --allow-unauthenticated \
