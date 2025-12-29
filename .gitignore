@@ -1,0 +1,27 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+.env
+.env.local
+
+# Node
+node_modules/
+build/
+dist/
+
+# IDE
+.vscode/
+.idea/
+
+# Data
+*.pdf
+chroma_db/
+
+# GCP
+*.json
+!package*.json
+
+# OS
+.DS_Store
+Thumbs.db
